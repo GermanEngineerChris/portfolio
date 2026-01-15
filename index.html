@@ -5,286 +5,440 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chris Behrendt | Engineering Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         :root {
             --bg: #050505;
-            --sidebar-bg: rgba(15, 15, 15, 0.7);
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-reflection: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+            --sidebar-bg: rgba(15, 15, 15, 0.75); 
+            --card-bg: rgba(20, 20, 20, 0.75); 
+            --glass-border: rgba(255, 255, 255, 0.15);
             --accent: #0071e3;
-            --accent-glow: rgba(0, 113, 227, 0.4);
+            --accent-glow: rgba(0, 113, 227, 0.6);
+            --cv-accent: #d4af37;
+            --cv-glow: rgba(212, 175, 55, 0.5);
             --text-main: #f5f5f7;
             --text-dim: #a1a1a6;
         }
 
+        /* --- Globales Einblenden beim Laden --- */
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% -20%, #1a1a1a 0%, #050505 80%);
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            animation: fadeInPage 1.2s ease-out forwards;
         }
 
-        /* --- Sidebar --- */
-        #sidebar {
-            width: 280px;
-            background: var(--sidebar-bg);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-right: 1px solid var(--glass-border);
-            height: 100vh;
-            position: fixed;
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-        }
+        @keyframes rotate { to { --angle: 360deg; } }
+        @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
-        .sidebar-header {
-            padding: 40px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
-            letter-spacing: -0.02em;
-            border-bottom: 1px solid var(--glass-border);
-            margin-bottom: 20px;
-        }
-
-        #sidebar ul { list-style: none; padding: 0 15px; flex-grow: 1; }
-        
-        #sidebar ul li {
-            padding: 12px 15px;
-            margin-bottom: 6px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-dim);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #sidebar ul li:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-main); }
-        #sidebar ul li.active { color: #fff; background: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
-
-        .sidebar-profile {
-            padding: 20px;
-            margin: 15px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(10px);
-        }
-
-        .profile-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.2); }
-
-        /* --- Main Content --- */
-        #content { margin-left: 280px; padding: 60px; width: 100%; }
-        h1 { font-size: 2.8rem; font-weight: 600; margin-bottom: 50px; background: linear-gradient(to bottom, #fff 0%, #a1a1a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 35px; }
-
-        .project-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.15, 0.83, 0.66, 1);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .project-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-
-        .media-container { width: 100%; aspect-ratio: 16 / 9; background: #000; position: relative; overflow: hidden; border-bottom: 1px solid var(--glass-border); }
-        .media-container img { width: 100%; height: 100%; object-fit: cover; }
-
-        .project-info { padding: 28px; flex-grow: 1; display: flex; flex-direction: column; }
-        .tag { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
-        .project-info h3 { font-size: 1.4rem; margin-bottom: 12px; font-weight: 600; }
-        .project-info p { color: var(--text-dim); line-height: 1.6; font-size: 1rem; }
-
-        /* --- Detail Overlay --- */
-        #detail-overlay {
-            display: none;
+        /* --- HINTERGRUND --- */
+        .page-background {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(30px);
-            z-index: 2000;
-            overflow-y: auto;
-            padding: 60px 20px;
+            z-index: -2;
+            background: url('background_engineering.jpg') no-repeat center center;
+            background-size: cover;
+            filter: brightness(0.28) contrast(1.1);
+            will-change: transform;
         }
 
-        .detail-container { max-width: 1000px; margin: 0 auto; background: rgba(20, 20, 20, 0.6); border: 1px solid var(--glass-border); border-radius: 32px; padding: 40px; position: relative; }
-        .detail-close { position: fixed; top: 30px; right: 40px; cursor: pointer; color: #fff; z-index: 2001; transition: 0.3s; }
+        .glass-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.2); 
+        }
 
-        .detail-main-img { width: 100%; border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 20px; aspect-ratio: 16 / 9; object-fit: cover; }
-        
-        .detail-content h2 { font-size: 2.5rem; margin-bottom: 24px; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .detail-content p { color: var(--text-dim); line-height: 1.8; font-size: 1.1rem; white-space: pre-wrap; margin-bottom: 30px; }
+        /* --- TOP BAR & SUCHE --- */
+        .top-bar {
+            position: fixed;
+            top: 25px; left: 300px; right: 0;
+            display: flex; justify-content: center;
+            z-index: 1400; pointer-events: none;
+        }
 
-        pre { background: rgba(0,0,0,0.5); padding: 24px; border-radius: 16px; border: 1px solid var(--glass-border); color: #00ff41; font-family: 'Courier New', monospace; overflow-x: auto; font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; }
-        
-        .github-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+        .search-container { position: relative; width: 100%; max-width: 400px; pointer-events: auto; }
+
+        .search-input {
+            width: 100%; padding: 12px 20px 12px 45px;
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            padding: 14px 24px;
-            border-radius: 12px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
+            border-radius: 20px; color: var(--text-main);
+            outline: none; transition: all 0.3s ease;
         }
-        .github-btn:hover { background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); border-color: transparent; }
 
-        /* --- Impressum Footer --- */
-        footer { 
-            margin-top: 80px; 
-            padding: 60px 0; 
-            border-top: 1px solid var(--glass-border); 
-            color: var(--text-dim); 
-            text-align: center; 
-            font-size: 0.85rem; 
+        .search-input:hover, .search-input:focus, .search-input.searching { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 15px var(--accent-glow); 
+            background: rgba(255, 255, 255, 0.08);
         }
-        .impressum-content { max-width: 600px; margin: 0 auto; line-height: 1.6; }
-        .impressum-content h4 { color: var(--text-main); margin-bottom: 10px; font-weight: 600; }
+
+        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-dim); transition: color 0.3s ease; }
+        .search-input.searching + .search-icon, .search-input:focus + .search-icon { color: var(--accent); }
+
+        /* --- CLOCK --- */
+        #glass-clock {
+            position: fixed; top: 30px; right: 40px; padding: 12px 24px;
+            z-index: 1500; display: flex; flex-direction: column; gap: 12px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden; max-height: 50px; border-radius: 16px;
+            border: 2px solid var(--glass-border); background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        #glass-clock:hover {
+            max-height: 160px;
+            background: linear-gradient(rgba(20,20,20,0.9), rgba(20,20,20,0.9)) padding-box,
+                        conic-gradient(from var(--angle), #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000) border-box;
+            border: 2px solid transparent; animation: rotate 4s linear infinite;
+        }
+
+        .clock-row { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+        .clock-details { font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 10px; display: flex; flex-direction: column; gap: 8px; opacity: 0; transition: opacity 0.3s ease; }
+        #glass-clock:hover .clock-details { opacity: 1; }
+
+        /* --- SIDEBAR --- */
+        #sidebar {
+            width: 280px; 
+            background: var(--sidebar-bg); 
+            backdrop-filter: blur(35px) saturate(180%);
+            -webkit-backdrop-filter: blur(35px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-left: none;
+            height: calc(100vh - 40px);
+            position: fixed;
+            top: 20px; left: 0;
+            display: flex; flex-direction: column;
+            z-index: 1000;
+            border-radius: 0 40px 40px 0;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar-header { padding: 40px 30px; font-size: 1.1rem; font-weight: 600; border-bottom: 1px solid var(--glass-border); margin-bottom: 20px; transition: all 0.4s ease; }
+        .sidebar-header:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+
+        #sidebar ul { list-style: none; padding: 0 15px; flex-grow: 1; }
+        #sidebar ul li { padding: 12px 15px; margin-bottom: 6px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--text-dim); transition: all 0.3s ease; }
+        #sidebar ul li:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-main); }
+        #sidebar ul li.active { color: #fff; background: var(--accent); box-shadow: 0 10px 20px var(--accent-glow); }
+        #sidebar ul li.cv-btn { color: var(--cv-accent); }
+        #sidebar ul li.cv-btn.active { background: var(--cv-accent); color: #fff; box-shadow: 0 10px 20px var(--cv-glow); }
+
+        .sidebar-profile { padding: 20px; margin: 15px 20px 25px 15px; border-radius: 24px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 12px; transition: all 0.4s ease; }
+        .sidebar-profile:hover { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); background: rgba(0, 113, 227, 0.08); }
+        .profile-info span { transition: all 0.3s ease; }
+        .sidebar-profile:hover .profile-info span { color: #fff; text-shadow: 0 0 10px var(--accent-glow); }
+
+        /* --- CONTENT GRID --- */
+        #content { margin-left: 280px; padding: 100px 60px 60px; width: calc(100% - 280px); position: relative; z-index: 1; }
+        h1 { font-size: 3rem; margin-bottom: 50px; background: linear-gradient(to bottom, #fff 0%, #a1a1a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+
+        .project-card {
+            background: var(--card-bg); border: 1px solid var(--glass-border);
+            border-radius: 24px; overflow: hidden; cursor: pointer; transition: all 0.6s ease;
+            opacity: 0; transform: translateY(20px); display: none;
+        }
+        .project-card.visible { opacity: 1; transform: translateY(0); }
+        .project-card:hover { transform: translateY(-10px); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+
+        .media-container { width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+        .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
+
+        .project-info { padding: 24px; }
+        .tag { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; display: block; }
+
+        /* --- OVERLAY & GALLERY FORMATTING --- */
+        #detail-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(25px); z-index: 2000; overflow-y: auto; padding: 40px 20px; }
+        .detail-container { max-width: 900px; margin: 0 auto; background: rgba(30, 30, 30, 0.5); border: 1px solid var(--glass-border); border-radius: 32px; padding: 40px; transform: scale(0.95); transition: 0.5s ease; }
+        #detail-overlay.active .detail-container { transform: scale(1); }
+        .detail-close { position: fixed; top: 30px; right: 40px; cursor: pointer; color: #fff; z-index: 2100; }
+        
+        #detail-media-box { 
+            width: 100%; 
+            aspect-ratio: 16 / 9; 
+            border-radius: 16px; 
+            overflow: hidden; 
+            margin-bottom: 20px; 
+            border: 1px solid var(--glass-border); 
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #detail-media-box img, #detail-media-box video, #detail-media-box iframe { 
+            max-width: 100%; 
+            max-height: 100%; 
+            width: auto; 
+            height: auto; 
+            object-fit: contain; 
+            border: none;
+        }
+
+        .thumbnail-bar { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        .thumb-item { 
+            width: 100px; 
+            height: 65px; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            opacity: 0.4; 
+            border: 2px solid transparent; 
+            transition: 0.3s; 
+            flex-shrink: 0; 
+        }
+        .thumb-item.active { opacity: 1; border-color: var(--accent); }
+        .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        .btn-action { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; margin-top: 15px; }
+
+        @media (max-width: 900px) {
+            #sidebar { width: 90%; height: auto; position: relative; border-radius: 0 0 20px 20px; top: 0; margin-bottom: 20px; }
+            #sidebar ul { display: flex; overflow-x: auto; padding: 10px; }
+            #content { margin-left: 0; padding: 120px 20px 30px; width: 100%; }
+            .sidebar-profile { display: none; }
+            .top-bar { left: 0; top: 75px; }
+        }
     </style>
 </head>
-<body>
+<body onload="filterProjects('all'); startClock();">
 
-    <div id="detail-overlay">
-        <div class="detail-close" onclick="closeDetails()"><i data-lucide="x-circle" size="40"></i></div>
-        <div class="detail-container">
-            <img id="detail-display-img" class="detail-main-img" src="">
-            <div id="detail-info" class="detail-content">
-                <h2 id="detail-title"></h2>
+    <div class="page-background" id="parallax-bg"></div>
+    <div class="glass-overlay"></div>
+
+    <div class="top-bar">
+        <div class="search-container">
+            <input type="text" id="project-search" class="search-input" placeholder="Suchen..." oninput="handleSearch(this)">
+            <i data-lucide="search" class="search-icon" size="18"></i>
+        </div>
+    </div>
+
+    <div id="glass-clock">
+        <div class="clock-row"><i data-lucide="clock" size="18"></i> <span id="clock-time">00:00:00</span></div>
+        <div class="clock-details">
+            <div style="display:flex; align-items:center; gap:8px;"><i data-lucide="calendar" size="14"></i><span id="clock-date">Laden...</span></div>
+            <div style="display:flex; align-items:center; gap:8px;"><i data-lucide="hash" size="14"></i><span>KW <span id="clock-week">--</span></span></div>
+        </div>
+    </div>
+
+    <div id="detail-overlay" onclick="closeDetails()">
+        <div class="detail-container" onclick="event.stopPropagation()">
+            <div class="detail-close" onclick="closeDetails()"><i data-lucide="x-circle" size="36"></i></div>
+            <div id="detail-media-box"></div>
+            <div id="detail-thumbnails" class="thumbnail-bar"></div>
+            <div class="detail-content">
+                <h2 id="detail-title" style="font-size: 2rem; margin-bottom: 15px;"></h2>
                 <div id="detail-body"></div>
             </div>
         </div>
     </div>
 
     <nav id="sidebar">
-        <div class="sidebar-header">GermanEngineerChris</div>
+        <div class="sidebar-header">Chris Behrendt</div>
         <ul>
-            <li class="active" onclick="filterProjects('all', this)"><i data-lucide="layers"></i> Alle Fachbereiche</li>
+            <li id="li-all" class="active" onclick="filterProjects('all', this)"><i data-lucide="layers"></i> Projekte</li>
+            <li class="cv-btn" onclick="filterProjects('lebenslauf', this)"><i data-lucide="user-round"></i> Lebenslauf</li>
             <li onclick="filterProjects('mechanik', this)"><i data-lucide="settings"></i> Mechanik</li>
             <li onclick="filterProjects('elektrik', this)"><i data-lucide="zap"></i> Elektrik</li>
             <li onclick="filterProjects('software', this)"><i data-lucide="code-2"></i> Software</li>
-            <li onclick="document.getElementById('impressum').scrollIntoView()"><i data-lucide="info"></i> Impressum</li>
+            <li onclick="filterProjects('besuche', this)"><i data-lucide="building-2"></i> Besuche</li>
         </ul>
+        
         <div class="sidebar-profile">
-            <img src="Chris_Behrendt.jpg" alt="Chris" class="profile-img">
-            <div class="profile-info">
-                <span style="font-size: 0.9rem; font-weight: 600;">Chris Behrendt</span>
-                <a href="https://www.linkedin.com/in/chris-behrendt-50b80a2b3/" target="_blank" style="font-size: 0.75rem; color: var(--accent); text-decoration: none;">
-                    <i data-lucide="linkedin" size="12"></i> LinkedIn
-                </a>
+            <div class="profile-top" style="display:flex; align-items:center; gap:15px;">
+                <img src="Chris_Behrendt.jpg" alt="Profile" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.2);">
+                <div class="profile-info">
+                    <span style="font-weight: 600; font-size: 0.95rem;">Chris Behrendt</span>
+                    <div style="display: flex; gap: 8px; margin-top: 4px;">
+                        <a href="https://www.linkedin.com/in/chris-behrendt-50b80a2b3/" target="_blank" style="color:var(--accent);"><i data-lucide="linkedin" size="12"></i></a>
+                        <a href="https://github.com/GermanEngineerChris" target="_blank" style="color:var(--accent);"><i data-lucide="github" size="12"></i></a>
+                    </div>
+                </div>
             </div>
+            <div style="font-size: 0.7rem; color: var(--text-dim); margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.05);">Gartenstraße 8, 96342 Stockheim</div>
         </div>
     </nav>
 
     <div id="content">
-        <h1>Projekte</h1>
-        <div class="project-grid">
-            <div class="project-card" data-category="mechanik" onclick="openDetails('Ned2 Greifer: Mechanik', 'Konstruktion eines adaptiven Parallelgreifers in Siemens NX.\\n\\nDETAILS:\\n- Servo-Zahnstangen-Antrieb.\\n- Optimiert für FDM-3D-Druck.', ['greifer_mechanik_1.jpg'])">
-                <div class="media-container"><img src="greifer_mechanik_1.jpg"></div>
-                <div class="project-info"><span class="tag">Mechanik</span><h3>Siemens NX Konstruktion</h3><p>Greifersystem für Ned2.</p></div>
-            </div>
+        <h1 id="page-title">Meine Projekte</h1>
+        <div class="project-grid" id="project-grid">
             
-            <div class="project-card" data-category="software" onclick="openSoftwareDetails()">
-                <div class="media-container"><img src="greifer_code_1.jpg"></div>
-                <div class="project-info"><span class="tag">Software</span><h3>IoT Webserver Firmware</h3><p>ESP32 C++ Code zur WLAN-Steuerung.</p></div>
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Hochschule Coburg', 'Wissenschaftlicher Assistent (Mai 2024 - Heute)\\n- Erstellen digitaler Zwillinge (Siemens NX MCD)\\n- KI-Forschung\\n- Retrofit Labor 3D Drucker', ['cv_hscoburg.jpg'])">
+                <div class="media-container"><img src="cv_hscoburg.jpg" alt="Job"></div>
+                <div class="project-info"><span class="tag" style="color:var(--cv-accent);">Berufsweg</span><h3>TTZ der Hochschule Coburg</h3><p>Wiss. Assistent - Siemens NX & KI.</p></div>
+            </div>
+
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Bachelor Studium', 'B.Eng. Maschinenbau - Digitale Produktion\\n(Okt 2023 - Juli 2027)\\nFokus auf Automatisierung.', ['study.jpg'])">
+                <div class="media-container"><img src="study.jpg" alt="Studium"></div>
+                <div class="project-info"><span class="tag" style="color:var(--cv-accent);">Ausbildung</span><h3>Hochschule Coburg</h3><p>Maschinenbau - Digitale Produktion.</p></div>
+            </div>
+
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Hans Weber GmbH', 'Mechatroniker (März 2023 - Okt 2023)\\nInbetriebnahme von Schleifmaschinen & Extrudern.', ['cv_hansweber.jpg'])">
+                <div class="media-container"><img src="cv_hansweber.jpg" alt="Job"></div>
+                <div class="project-info"><span class="tag" style="color:var(--cv-accent);">Berufsweg</span><h3>Hans Weber GmbH</h3><p>Mechatroniker - Montage & Service.</p></div>
+            </div>
+
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Tongji University', 'Gastsemester Maschinenbau (Sep 2025)\\nShanghai, China.', ['cv_shanghai.jpg'])">
+                <div class="media-container"><img src="cv_shanghai.jpg" alt="Ausland"></div>
+                <div class="project-info"><span class="tag" style="color:var(--cv-accent);">International</span><h3>Tongji Shanghai</h3><p>Auslandssemester Maschinenbau.</p></div>
+            </div>
+
+            <div class="project-card" data-category="mechanik" onclick="openDetails('Ned2 Greifer: Mechanik', 'Konstruktion eines adaptiven Parallelgreifers in Siemens NX.\\n\\n- Servo-Zahnstangen-Antrieb\\n- Optimiert für FDM-3D-Druck\\n- Leichtbau Design', ['mechanik1.jpg', 'mechanik2.jpg', 'mechanik3.mp4', 'mechanik4.jpg'])">
+                <div class="media-container"><img src="mechanik1.jpg" alt="NX"></div>
+                <div class="project-info"><span class="tag">Mechanik</span><h3>Siemens NX Konstruktion</h3><p>Entwicklung Greifersystem für  Niryo Ned2.</p></div>
+            </div>
+
+            <div class="project-card" data-category="elektrik" onclick="openDetails('Ned2 Greifer: Elektrik', 'Hardware-Integration & Signalfluss.\\n\\n- ESP32 Steuerung\\n- PWM Signalverarbeitung\\n- Implementierung eines Tasters', ['elektrik1.jpg', 'elektrik2.jpg', 'elektrik3.jpg', 'youtube:dQw4w9WgXcQ'])">
+                <div class="media-container"><img src="elektrik1.jpg" alt="Elektrik"></div>
+                <div class="project-info"><span class="tag">Elektrik</span><h3>Hardware & Sensorik</h3><p>ESP32 Steuerung & Signalfluss.</p></div>
+            </div>
+
+            <div class="project-card" data-category="software" onclick="openSoftwareDetails(['software1.jpg', 'software2.jpg'])">
+                <div class="media-container"><img src="software1.jpg" alt="Software"></div>
+                <div class="project-info"><span class="tag">Software</span><h3>IoT Firmware</h3><p>ESP32 C++ WLAN-Steuerung.</p></div>
+            </div>
+
+            <div class="project-card" data-category="besuche" onclick="openDetails('Siemens Healthineers', 'Besuch der Fertigung in Shanghai.', ['besuch_siemens.jpg'])">
+                <div class="media-container"><img src="besuch_siemens.jpg" alt="Siemens"></div>
+                <div class="project-info"><span class="tag">Besuche</span><h3>Siemens Shanghai</h3><p>Modernste Fertigung von Computertomographen (CT)</p></div>
+            </div>
+
+            <div class="project-card" data-category="besuche" onclick="openDetails('Unitree Robotics', 'Einblicke in die agile Entwicklung und Serienproduktion von Quadruped-Robotern. Beobachtung der Schnittstellen zwischen Hardware-Design und KI-gestützter Bewegungssteuerung bei einem der Marktführer für autonome Robotik.', ['besuch_unitree.jpg'])">
+                <div class="media-container"><img src="besuch_unitree.jpg" alt="Unitree"></div>
+                <div class="project-info"><span class="tag">Besuche</span><h3>Unitree Shanghai</h3><p>Humanoide Roboter erster Klasse</p></div>
+            </div>
+
+            <div class="project-card" data-category="besuche" onclick="openDetails('Formnext Messe', 'Weltleitmesse für additive Fertigung', ['besuch_formnext.jpg'])">
+                <div class="media-container"><img src="besuch_formnext.jpg" alt="Formnext"></div>
+                <div class="project-info"><span class="tag">Besuche</span><h3>Formnext Frankfurt</h3><p>Weltleitmesse für die additive Fertigung</p></div>
             </div>
         </div>
-
-        <footer id="impressum">
-            <div class="impressum-content">
-                <h4>Impressum</h4>
-                <p>Chris Behrendt<br>
-                Gartenstraße 8<br>
-                96342 Stockheim</p>
-                <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.6;">
-                    © 2026 Chris Behrendt | Engineering Portfolio
-                </p>
-            </div>
-        </footer>
     </div>
 
     <script>
         lucide.createIcons();
+        let activeCategory = 'all';
 
-        const esp32Code = `#include <Arduino.h>
-#include <WiFi.h>
-#include <WebServer.h>
-#include <ESP32Servo.h>
+        window.addEventListener('scroll', () => {
+            const bg = document.getElementById('parallax-bg');
+            if(bg) bg.style.backgroundPositionY = (window.pageYOffset * 0.15) + "px";
+        });
 
-const char* WIFI_SSID = "yourwifi";
-const char* WIFI_PASS = "yourpassword"; 
+        function startClock() {
+            function update() {
+                const now = new Date();
+                document.getElementById('clock-time').innerText = now.toLocaleTimeString('de-DE');
+                document.getElementById('clock-date').innerText = now.toLocaleDateString('de-DE', { weekday:'long', day:'2-digit', month:'long'});
+                document.getElementById('clock-week').innerText = Math.ceil((((now - new Date(now.getFullYear(), 0, 1)) / 86400000) + 1) / 7);
+            }
+            setInterval(update, 1000); update();
+        }
 
-static const int SERVO_PIN = 8;
-Servo servo;
-WebServer server(80);
+        function handleSearch(input) {
+            const query = input.value.toLowerCase();
+            const cards = document.querySelectorAll('.project-card');
+            if (query.length > 0) {
+                input.classList.add('searching');
+                cards.forEach(card => {
+                    const content = card.innerText.toLowerCase() + card.getAttribute('onclick').toLowerCase();
+                    const matches = content.includes(query);
+                    card.style.display = matches ? 'block' : 'none';
+                    if(matches) setTimeout(() => card.classList.add('visible'), 10);
+                });
+            } else {
+                input.classList.remove('searching');
+                filterProjects(activeCategory);
+            }
+        }
 
-void setup() {
-  Serial.begin(115200);
-  servo.setPeriodHertz(50);
-  servo.attach(SERVO_PIN, 500, 2400);
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-  server.begin();
-}`;
+        function filterProjects(cat, el) {
+            activeCategory = cat;
+            if(el) { 
+                document.querySelectorAll('#sidebar ul li').forEach(l => l.classList.remove('active'));
+                el.classList.add('active'); 
+            }
+            const title = document.getElementById('page-title');
+            title.innerText = cat === 'lebenslauf' ? "Mein Lebenslauf" : (cat === 'all' ? "Meine Projekte" : cat.charAt(0).toUpperCase() + cat.slice(1));
+
+            document.querySelectorAll('.project-card').forEach((card, index) => {
+                card.classList.remove('visible');
+                const cardCat = card.dataset.category;
+                const matches = (cat === 'all' && cardCat !== 'lebenslauf' && cardCat !== 'besuche') || 
+                                (cat === 'lebenslauf' && cardCat === 'lebenslauf') || 
+                                (cat !== 'all' && cat !== 'lebenslauf' && cardCat === cat);
+                
+                card.style.display = matches ? 'block' : 'none';
+                if(matches) setTimeout(() => card.classList.add('visible'), index * 60);
+            });
+        }
+
+        function setMedia(src) {
+            const box = document.getElementById('detail-media-box');
+            box.innerHTML = '';
+            if (src.toLowerCase().endsWith('.mp4')) {
+                box.innerHTML = `<video src="${src}" autoplay loop muted playsinline></video>`;
+            } else if (src.startsWith('youtube:')) {
+                box.innerHTML = `<iframe src="https://www.youtube.com/embed/${src.split(':')[1]}?autoplay=1" allowfullscreen></iframe>`;
+            } else {
+                box.innerHTML = `<img src="${src}" alt="Detail">`;
+            }
+        }
+
+        function buildThumbs(images) {
+            const bar = document.getElementById('detail-thumbnails');
+            bar.innerHTML = '';
+            if (!images || images.length <= 1) { bar.style.display = 'none'; return; }
+            bar.style.display = 'flex';
+            images.forEach((src, idx) => {
+                const div = document.createElement('div');
+                div.className = 'thumb-item' + (idx === 0 ? ' active' : '');
+                const thumbImg = (src.toLowerCase().endsWith('.mp4') || src.startsWith('youtube:')) ? images[0] : src;
+                div.innerHTML = `<img src="${thumbImg}">`;
+                div.onclick = () => {
+                    setMedia(src);
+                    document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+                    div.classList.add('active');
+                };
+                bar.appendChild(div);
+            });
+        }
 
         function openDetails(title, text, images) {
-            const displayImg = document.getElementById('detail-display-img');
             document.getElementById('detail-title').innerText = title;
-            document.getElementById('detail-body').innerHTML = '<p>' + text.replace(/\\n/g, '<br>') + '</p>';
-            displayImg.src = images[0];
-            document.getElementById('detail-overlay').style.display = 'block';
+            document.getElementById('detail-body').innerHTML = `<p style="line-height:1.6; color:var(--text-dim); white-space: pre-line;">${text.replace(/\\n/g, '\n')}</p>`;
+            setMedia(images[0]);
+            buildThumbs(images);
+            const overlay = document.getElementById('detail-overlay');
+            overlay.style.display = 'block'; setTimeout(() => overlay.classList.add('active'), 10);
             document.body.style.overflow = 'hidden';
         }
 
-        function openSoftwareDetails() {
-            document.getElementById('detail-title').innerText = 'Ned2 Greifer: Software (ESP32 IoT)';
-            document.getElementById('detail-display-img').src = 'greifer_code_1.jpg';
-            document.getElementById('detail-body').innerHTML = `
-                <p>Implementierung der Servosteuerung auf dem ESP32 mittels C++ unter Verwendung eines asynchronen Webservers.</p>
-                <pre>${esp32Code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre>
-                <a href="https://github.com/GermanEngineerChris/Ned2Gripper" target="_blank" class="github-btn">
-                    <i data-lucide="github"></i> Zum GitHub Repository
-                </a>
-            `;
-            document.getElementById('detail-overlay').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        function openSoftwareDetails(imgs) {
+            openDetails('Ned2: Software Stack', '- Embedded C++ Firmware für den ESP32\\n- Fernsteuerung über lokale IP Adresse', imgs);
+            document.getElementById('detail-body').innerHTML += `<a href="https://github.com/GermanEngineerChris" target="_blank" class="btn-action"><i data-lucide="github"></i> GitHub</a>`;
             lucide.createIcons();
         }
 
         function closeDetails() {
-            document.getElementById('detail-overlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function filterProjects(category, el) {
-            document.querySelectorAll('#sidebar ul li').forEach(li => li.classList.remove('active'));
-            el.classList.add('active');
-            const cards = document.querySelectorAll('.project-card');
-            cards.forEach(card => card.style.display = (category === 'all' || card.getAttribute('data-category') === category) ? 'flex' : 'none');
+            const overlay = document.getElementById('detail-overlay');
+            overlay.classList.remove('active');
+            setTimeout(() => { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }, 400);
         }
     </script>
 </body>
