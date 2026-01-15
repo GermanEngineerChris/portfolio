@@ -31,6 +31,7 @@
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* --- Sidebar --- */
@@ -133,14 +134,10 @@
         .detail-close { position: fixed; top: 30px; right: 40px; cursor: pointer; color: #fff; z-index: 2001; transition: 0.3s; }
 
         .detail-main-img { width: 100%; border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 20px; aspect-ratio: 16 / 9; object-fit: cover; }
-        .thumbnail-bar { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 30px; scrollbar-width: none; }
-        .thumbnail-bar img { width: 120px; height: 80px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: 0.3s; }
-        .thumbnail-bar img.active { border-color: var(--accent); opacity: 1; }
-
+        
         .detail-content h2 { font-size: 2.5rem; margin-bottom: 24px; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .detail-content p { color: var(--text-dim); line-height: 1.8; font-size: 1.1rem; white-space: pre-wrap; margin-bottom: 30px; }
 
-        /* Code & GitHub Link */
         pre { background: rgba(0,0,0,0.5); padding: 24px; border-radius: 16px; border: 1px solid var(--glass-border); color: #00ff41; font-family: 'Courier New', monospace; overflow-x: auto; font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; }
         
         .github-btn {
@@ -158,7 +155,17 @@
         }
         .github-btn:hover { background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); border-color: transparent; }
 
-        footer { margin-top: 80px; padding: 40px 0; border-top: 1px solid var(--glass-border); color: #444; text-align: center; font-size: 0.8rem; }
+        /* --- Impressum Footer --- */
+        footer { 
+            margin-top: 80px; 
+            padding: 60px 0; 
+            border-top: 1px solid var(--glass-border); 
+            color: var(--text-dim); 
+            text-align: center; 
+            font-size: 0.85rem; 
+        }
+        .impressum-content { max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .impressum-content h4 { color: var(--text-main); margin-bottom: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -167,7 +174,6 @@
         <div class="detail-close" onclick="closeDetails()"><i data-lucide="x-circle" size="40"></i></div>
         <div class="detail-container">
             <img id="detail-display-img" class="detail-main-img" src="">
-            <div id="detail-thumbnails" class="thumbnail-bar"></div>
             <div id="detail-info" class="detail-content">
                 <h2 id="detail-title"></h2>
                 <div id="detail-body"></div>
@@ -182,6 +188,7 @@
             <li onclick="filterProjects('mechanik', this)"><i data-lucide="settings"></i> Mechanik</li>
             <li onclick="filterProjects('elektrik', this)"><i data-lucide="zap"></i> Elektrik</li>
             <li onclick="filterProjects('software', this)"><i data-lucide="code-2"></i> Software</li>
+            <li onclick="document.getElementById('impressum').scrollIntoView()"><i data-lucide="info"></i> Impressum</li>
         </ul>
         <div class="sidebar-profile">
             <img src="Chris_Behrendt.jpg" alt="Chris" class="profile-img">
@@ -207,7 +214,18 @@
                 <div class="project-info"><span class="tag">Software</span><h3>IoT Webserver Firmware</h3><p>ESP32 C++ Code zur WLAN-Steuerung.</p></div>
             </div>
         </div>
-        <footer><p>© 2026 Chris Behrendt | Stockheim</p></footer>
+
+        <footer id="impressum">
+            <div class="impressum-content">
+                <h4>Impressum</h4>
+                <p>Chris Behrendt<br>
+                Gartenstraße 8<br>
+                96342 Stockheim</p>
+                <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.6;">
+                    © 2026 Chris Behrendt | Engineering Portfolio
+                </p>
+            </div>
+        </footer>
     </div>
 
     <script>
@@ -238,7 +256,6 @@ void setup() {
             document.getElementById('detail-title').innerText = title;
             document.getElementById('detail-body').innerHTML = '<p>' + text.replace(/\\n/g, '<br>') + '</p>';
             displayImg.src = images[0];
-            document.getElementById('detail-thumbnails').style.display = 'none';
             document.getElementById('detail-overlay').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
