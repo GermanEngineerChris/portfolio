@@ -144,7 +144,7 @@
         .profile-info span { transition: all 0.3s ease; }
         .sidebar-profile:hover .profile-info span { color: #fff; text-shadow: 0 0 10px var(--accent-glow); }
 
-        /* --- CONTENT GRID --- */
+        /* --- CONTENT --- */
         #content { margin-left: 280px; padding: 100px 60px 60px; width: calc(100% - 280px); position: relative; z-index: 1; }
         h1 { font-size: 3rem; margin-bottom: 50px; background: linear-gradient(to bottom, #fff 0%, #a1a1a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
@@ -266,8 +266,9 @@
                 <div class="profile-info">
                     <span style="font-weight: 600; font-size: 0.95rem;">Chris Behrendt</span>
                     <div style="display: flex; gap: 8px; margin-top: 4px;">
-                        <a href="https://www.linkedin.com/in/chris-behrendt-50b80a2b3/" target="_blank" style="color:var(--accent);"><i data-lucide="linkedin" size="12"></i></a>
-                        <a href="https://github.com/GermanEngineerChris" target="_blank" style="color:var(--accent);"><i data-lucide="github" size="12"></i></a>
+                        <a href="https://www.linkedin.com/in/chris-behrendt-50b80a2b3/" target="_blank" style="color:var(--accent);"><i data-lucide="linkedin" size="14"></i></a>
+                        <a href="https://github.com/GermanEngineerChris" target="_blank" style="color:var(--accent);"><i data-lucide="github" size="14"></i></a>
+                        <a href="https://www.youtube.com/@GermanEngineerChris" target="_blank" style="color:var(--accent);"><i data-lucide="youtube" size="14"></i></a>
                     </div>
                 </div>
             </div>
@@ -284,24 +285,24 @@
                 <div class="project-info"><span class="tag" style="color:var(--cv-accent);">Berufsweg</span><h3>TTZ der Hochschule Coburg</h3><p>Wiss. Assistent - Siemens NX & KI.</p></div>
             </div>
 
-            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Bachelor Studium', 'B.Eng. Maschinenbau - Digitale Produktion\\n(Okt 2023 - Juli 2027)\\nFokus auf Automatisierung.', ['study.jpg'])">
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Bachelor Studium', 'B.Eng. Maschinenbau - Digitale Produktion\\n(Okt 2023 - Juli 2027)\\nFokus auf Automatisierung, Digitale Produktion und KI.', ['study.jpg'])">
                 <div class="media-container"><img src="study.jpg" alt="Studium"></div>
                 <div class="project-info"><span class="tag" style="color:var(--cv-accent);">Ausbildung</span><h3>Hochschule Coburg</h3><p>Maschinenbau - Digitale Produktion.</p></div>
             </div>
 
-            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Hans Weber GmbH', 'Mechatroniker (März 2023 - Okt 2023)\\nInbetriebnahme von Schleifmaschinen & Extrudern.', ['cv_hansweber.jpg'])">
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Hans Weber GmbH', 'Ausbildung zum Mechatroniker (Sep 2019 - Februar 2023)\\n Mechatroniker (März 2023 - Okt 2023)\\n Mechatroniker für den mechanischen und elektrischen Aufbau und Inbetriebnahme von Schleifmaschinen, Extruder, 3D Drucker, Automatsierungsanlagen.', ['cv_hansweber.jpg'])">
                 <div class="media-container"><img src="cv_hansweber.jpg" alt="Job"></div>
                 <div class="project-info"><span class="tag" style="color:var(--cv-accent);">Berufsweg</span><h3>Hans Weber GmbH</h3><p>Mechatroniker - Montage & Service.</p></div>
             </div>
 
-            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Tongji University', 'Gastsemester Maschinenbau (Sep 2025)\\nShanghai, China.', ['cv_shanghai.jpg'])">
+            <div class="project-card" data-category="lebenslauf" onclick="openDetails('Tongji University', 'Summerschool Maschinenbau (Sep 2025)\\nShanghai, China.', ['cv_shanghai.jpg'])">
                 <div class="media-container"><img src="cv_shanghai.jpg" alt="Ausland"></div>
-                <div class="project-info"><span class="tag" style="color:var(--cv-accent);">International</span><h3>Tongji Shanghai</h3><p>Auslandssemester Maschinenbau.</p></div>
+                <div class="project-info"><span class="tag" style="color:var(--cv-accent);">International</span><h3>Tongji Shanghai</h3><p>Summerschool China Maschinenbau.</p></div>
             </div>
 
             <div class="project-card" data-category="mechanik" onclick="openDetails('Ned2 Greifer: Mechanik', 'Konstruktion eines adaptiven Parallelgreifers in Siemens NX.\\n\\n- Servo-Zahnstangen-Antrieb\\n- Optimiert für FDM-3D-Druck\\n- Leichtbau Design', ['mechanik1.jpg', 'mechanik2.jpg', 'mechanik3.mp4', 'mechanik4.jpg'])">
                 <div class="media-container"><img src="mechanik1.jpg" alt="NX"></div>
-                <div class="project-info"><span class="tag">Mechanik</span><h3>Siemens NX Konstruktion</h3><p>Entwicklung Greifersystem für  Niryo Ned2.</p></div>
+                <div class="project-info"><span class="tag">Mechanik</span><h3>Siemens NX Konstruktion</h3><p>Entwicklung Greifersystem für Niryo Ned2.</p></div>
             </div>
 
             <div class="project-card" data-category="elektrik" onclick="openDetails('Ned2 Greifer: Elektrik', 'Hardware-Integration & Signalfluss.\\n\\n- ESP32 Steuerung\\n- PWM Signalverarbeitung\\n- Implementierung eines Tasters', ['elektrik1.jpg', 'elektrik2.jpg', 'elektrik3.jpg', 'youtube:dQw4w9WgXcQ'])">
@@ -394,7 +395,7 @@
             if (src.toLowerCase().endsWith('.mp4')) {
                 box.innerHTML = `<video src="${src}" autoplay loop muted playsinline></video>`;
             } else if (src.startsWith('youtube:')) {
-                box.innerHTML = `<iframe src="https://www.youtube.com/embed/${src.split(':')[1]}?autoplay=1" allowfullscreen></iframe>`;
+                box.innerHTML = `<iframe src="https://www.youtube.com/embed/${src.split(':')[1]}?autoplay=1" style="width:100%; height:100%; border:none;"></iframe>`;
             } else {
                 box.innerHTML = `<img src="${src}" alt="Detail">`;
             }
